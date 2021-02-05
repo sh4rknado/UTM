@@ -67,6 +67,31 @@ class User implements UserInterface
     private $apiToken;
 
     /**
+     * @var string image_path
+     * @orm\Column(type="string", nullable=true)
+     */
+    private $avatar;
+
+    /**
+     * @return string
+     */
+    public function getAvatar(): string
+    {
+        if($this->avatar == null) return "";
+        else return $this->avatar;
+    }
+
+    /**
+     * @param string $avatar
+     * @return User
+     */
+    public function setAvatar(string $avatar): User
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -196,6 +221,7 @@ class User implements UserInterface
      */
     public function __contruct__() {
         $this->setRoles(['ROLE_USER']);
+        $this->setAvatar('images/$this->getId().jpg');
     }
 
     /**
@@ -228,6 +254,19 @@ class User implements UserInterface
             return true;
         }
         else  return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function rolesToString() {
+        $convert_roles = "";
+
+        foreach ($this->getRoles() as $r) {
+            $convert_roles .= $r." - ";
+        }
+        return $convert_roles;
+
     }
 
 }
