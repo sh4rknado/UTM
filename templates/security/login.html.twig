@@ -8,17 +8,23 @@
 {% endblock %}
 
 {% block body %}
-<form method="post">
 
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <script>
+            $(document).ready(function() {
+                $("#msg").fadeIn("slow").fadeTo(8000, 8000).fadeOut("slow");
+            });
+        </script>
+
+        <div id="msg" class="msg_error alert alert-dismissible alert-danger" style="display: none">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Erreur !</strong> <br> {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+
     {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
+
+<form method="post">
 
     <div id="register_container">
         <h1 class="h3 mb-3 font-weight-normal">Veuillez vous Indentifier </h1>
@@ -35,7 +41,7 @@
 
         <div class="form-check remember">
             <label class="form-check-label">
-                <input type="checkbox" class="form-check-input" name="_remember_me">
+                <input type="checkbox" class="form-check-input" name="_remember_me" checked>
                 Se Souvenir
             </label>
         </div>

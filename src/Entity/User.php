@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -173,7 +174,6 @@ class User implements UserInterface
         return $this;
     }
 
-
     /**
      * @see UserInterface
      */
@@ -189,6 +189,45 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * Default Buidler init Roles : ROLE_USER
+     */
+    public function __contruct__() {
+        $this->setRoles(['ROLE_USER']);
+    }
+
+    /**
+     * @param string $new_roles
+     * @return bool
+     */
+    public function addRole($new_roles) {
+
+        if(in_array($new_roles, $this->getRoles())) {
+            return false;
+        }
+        else {
+            $roles = $this->getRoles();
+            array_push($roles, $new_roles);
+            $this->setRoles($roles);
+            return true;
+        }
+    }
+
+    /**
+     * @param string $old_roles
+     * @return bool
+     */
+    public function removeRole($old_roles) {
+
+        if(in_array($old_roles, $this->getRoles())) {
+            $new_roles = [];
+            $roles = $this->getRoles();
+            foreach ($roles as $r) if($r != $old_roles) array_push($new_roles, $r);
+            return true;
+        }
+        else  return false;
     }
 
 }

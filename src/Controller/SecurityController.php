@@ -18,11 +18,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
-    {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+    public function login(AuthenticationUtils $authenticationUtils): Response {
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -35,6 +31,7 @@ class SecurityController extends AbstractController
             'error' => $error
         ]);
     }
+
 
     /**
      * @Route("/logout", name="app_logout")
@@ -55,14 +52,11 @@ class SecurityController extends AbstractController
 
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
-
         $form->handleRequest($request);
 
-        if($form->isSubmitted() and $form->isValid()) {
-
+        if($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
-
             $manager->persist($user);
             $manager->flush();
         }

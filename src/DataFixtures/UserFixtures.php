@@ -15,22 +15,32 @@ class UserFixtures extends Fixture
         $this->encoder = $_encoder;
     }
 
-    public function load(ObjectManager $manager)
-    {
+    public function load(ObjectManager $manager) {
+
+        /**
+         * Create Admin
+         */
         $user = new User();
         $user->setEmail('admin@gmail.com')
-            ->setRoles(['role_admin'])
-            ->setPassword($this->encoder->encodePassword($user, 'admin'))
-            ->setRoles(['ROLE_ADMIN']);
-
+            ->setUsername('admin')
+            ->setPassword($this->encoder->encodePassword($user, 'admin'));
+        $user->addRole('ROLE_ADMIN');
         $manager->persist($user);
 
+
+        /**
+         * Create User
+         */
         $user = new User();
         $user->setEmail('user@gmail.com')
-            ->setRoles(['role_user'])
+            ->setUsername('user')
             ->setPassword($this->encoder->encodePassword($user, 'user'));
+        $user->addRole('ROLE_USER');
         $manager->persist($user);
 
+        /**
+         * Save data in db
+         */
         $manager->flush();
     }
 }

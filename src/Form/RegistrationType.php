@@ -18,28 +18,28 @@ class RegistrationType extends AbstractType
             ->add('username', TextType::class, [
                 'attr' => [
                     'placeholder' => 'nom d\'utilisateur ',
-                    'class' => 'form-control'
+                    'class' => 'form-control, textbox'
                 ]
             ])
 
             ->add('email', EmailType::class, [
                 'attr' => [
                     'placeholder' => 'adresse email',
-                    'class' => 'form-control'
+                    'class' => 'form-control, textbox'
                 ]
             ])
 
             ->add('password', PasswordType::class, [
                 'attr' => [
                     'tooltip' => 'Le mot de passe doit faire 8 caractères',
-                    'class' => 'form-control'
+                    'class' => 'form-control, textbox'
                 ]
             ])
 
             ->add('confirm_password', PasswordType::class, [
                 'attr' => [
                     'tooltip' => 'Le mot de passe doit correspondre avec le password',
-                    'class' => 'form-control'
+                    'class' => 'form-control, textbox'
                 ]
             ])
         ;
