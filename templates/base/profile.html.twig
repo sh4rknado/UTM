@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile {{ user.username }}{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    <div id="profil-container">
+
+        <div id="profil-photo">
+            <ul>
+                <li><img id="avatar-img" src="https://via.placeholder.com/150" alt="placeholder"></li>
+            </ul>
+        </div>
+
+        <div id="profil-infos">
+            <ul>
+                <li><span>Nom d'utilisateur </span><span class="infos-space">{{ user.username }}</span></li>
+                <li><span>Adresse mail </span><span class="infos-space">{{ user.email }}</span></li>
+                <li><span>Rôle(s) </span><span class="infos-space">{{ user.rolesToString }}</span></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

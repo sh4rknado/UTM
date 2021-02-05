@@ -1,0 +1,62 @@
+
+/*  /////////////////////////////// < Navivation Bar > /////////////////////////////// */
+
+#login_link li {
+    display: inline-block;
+}
+
+.avatar-nav {
+    margin-right: 5%;
+}
+
+.avatar {
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+}
+
+/*  /////////////////////////////// < Profil Bar > /////////////////////////////// */
+
+
+#profil-container {
+    width: 75%;
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    background: #fff;
+    padding: 20px;
+    margin: 2% auto 0;
+}
+
+#profil-container div {
+    display: inline-flex;
+}
+
+#profil-container ul li {
+    list-style: none;
+    padding: 10px;
+}
+
+#profil-photo {
+    text-align: center;
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+}
+
+#profil-photo ul {
+    padding: 0;
+}
+
+#avatar-img {
+    border-radius: 50%;
+    width: 100px;
+}
+
+
+#profil-infos{
+    border-bottom-color: rgb(0, 0, 0) !important;
+    border-bottom-style: solid !important;
+    border-bottom-width: 1px !important;
+}
+.infos-space {
+    padding-left: 5vw;
+}
