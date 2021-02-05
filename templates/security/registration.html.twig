@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Enregistrement !{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/security.css') }}">
+{% endblock %}
+
+
+{% block body %}
+
+    {{ form_start(form) }}
+
+    <div id="register_container">
+        <h1 id="register_title">Création du compte</h1>
+
+        <div class="form-group">
+            <label for="">Nom d'utilisateur</label>
+            {{ form_widget(form.username) }}
+        </div>
+
+        <div class="form-group">
+            <label for="">Adresse email</label>
+            {{ form_widget(form.email) }}
+            <small id="emailLegend" class="form-text text-muted">Ne partagez jamais votre addresse mail</small>
+        </div>
+
+        <div class="form-group">
+            <label for="">Mot de passe</label>
+            {{ form_widget(form.password) }}
+            <small id="passwordLegend" class="form-text text-muted">Le mot de passe doit faire 8 caractères</small>
+        </div>
+
+        <div class="form-group">
+            <label for="">Confirmation du mot de passe</label>
+            {{ form_widget(form.confirm_password) }}
+            <small id="passwordConfirmLegend" class="form-text text-muted">Le mot de passe doit être identiques</small>
+        </div>
+        <button type="submit" class="btn btn-info">Confirmer</button>
+        <div>
+            <hr>
+            <label for="">déjà un compte ?</label><a class="login_btn" href="{{ path('app_login') }}">connectez-vous</a>
+        </div>
+
+    </div>
+    {{ form_end(form) }}
+
+
+
+
+{% endblock %}
