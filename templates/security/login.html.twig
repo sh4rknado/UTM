@@ -30,7 +30,7 @@
     <div id="register_container">
         <h1 class="h3 mb-3 font-weight-normal">Veuillez vous Indentifier </h1>
 
-        <div class="form-group"
+        <div class="form-group">
             <label for="inputEmail">adresse e-mail</label>
             <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control textbox" required autofocus>
         </div>
@@ -46,13 +46,16 @@
                 Se Souvenir
             </label>
         </div>
+
         <div class="sigin_btn">
             <button class="btn btn-lg btn-info" type="submit">confirmer</button>
         </div>
+
         <div>
             <hr>
             <label for="">pas encore de compte ?</label><a class="login_btn" href="{{ path('app_register') }}">enregistrez-vous</a>
         </div>
+
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
     </div>
 

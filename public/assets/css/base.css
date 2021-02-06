@@ -1,4 +1,15 @@
 
+/*  /////////////////////////////// < Basic Rules > /////////////////////////////// */
+
+ul li {
+    list-style: none;
+}
+
+.avatar-nav img {
+    width: 50px;
+}
+
+
 /*  /////////////////////////////// < Navivation Bar > /////////////////////////////// */
 
 #login_link li {
@@ -17,46 +28,70 @@
     box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
 }
 
-/*  /////////////////////////////// < Profil Bar > /////////////////////////////// */
+/*  /////////////////////////////// < Profil > /////////////////////////////// */
 
-
-#profil-container {
+#profil-container,#settings-container {
     width: 75%;
     box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
     background: #fff;
     padding: 20px;
-    margin: 2% auto 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+    display: flex;
 }
 
-#profil-container div {
-    display: inline-flex;
+#profil-container, #settings-container h3 {
+    padding: 20px;
 }
 
 #profil-container ul li {
-    list-style: none;
     padding: 10px;
 }
 
-#profil-photo {
-    text-align: center;
-    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
-}
+/* /// < Profil Avatar > /// */
 
-#profil-photo ul {
-    padding: 0;
-}
-
-#avatar-img {
+#profil-photo img{
+    width: 150px;
     border-radius: 50%;
-    width: 100px;
+    box-shadow: 0 0 3px 0 rgb(0 0 0 /30%);
 }
 
 
-#profil-infos{
-    border-bottom-color: rgb(0, 0, 0) !important;
-    border-bottom-style: solid !important;
-    border-bottom-width: 1px !important;
+/* /// < Profil INFOS > /// */
+
+#profil-infos {
+    margin-left: 70px;
 }
-.infos-space {
-    padding-left: 5vw;
+
+#profil-infos ul {
+    padding: 0;
+    display: inline-block;
+}
+
+/* /// < Profil Settings > /// */
+
+#settings-container ul li {
+    margin-top: 10px;
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+}
+
+#settings-container ul li a {
+    cursor: pointer;
+}
+
+#settings-container ul hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.sliders {
+    display: block;
+    width: 40vw;
+    margin-left: 4vw;
+    height: 100%;
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    background: #fff;
 }

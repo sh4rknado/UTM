@@ -3,22 +3,149 @@
 {% block title %}Profile {{ user.username }}{% endblock %}
 
 {% block body %}
+    <script>
+
+        /* Check password correct */
+        function check_password() {
+            let password = $('#_password').val();
+            let password_confirm = $('#_password_confirm').val();
+
+            if(password !== "" && password_confirm !== "" && password === password_confirm)
+                $('#password_submit').removeAttr('disabled');
+
+            else $('#password_submit').prop("disabled", true);
+        }
+
+        /* Show the Slider */
+        function showSlider(id) {
+            let sliders = document.getElementsByClassName('sliders');
+            let new_id = id + "_slider";
+
+            for(let i=0; i < sliders.length; i++) {
+                if(sliders[i].id === new_id) {
+                    $('.sliders').fadeOut(500).delay(200);
+                    $(sliders[i]).delay(500).fadeIn('slow');
+                }
+            }
+        }
+
+        /* Document Ready */
+        $(document).ready(function() {
+            $('.sliders').fadeOut(0);
+            $('#password_submit').prop("disabled", true);
+
+            // li and a Click event
+            document.getElementById("menu-slider").addEventListener("click",function(e) {
+
+                if(e.target.nodeName === "A" || e.target.nodeName === "HR" || e.target.nodeName === "FONT") {
+
+                    // Try to search parent Node to get ID of LI
+                    parent = e.target.parentNode;
+                    while (parent.id === "") parent = parent.parentNode;
+                    showSlider(parent.id);
+                }
+                else if(e.target.nodeName === "LI") showSlider(e.target.id);
+            });
+
+            // Show Default Slider
+            showSlider('a');
+        });
+
+    </script>
 
 <div class="example-wrapper">
+
     <div id="profil-container">
 
+        {% if user.avatar != null %}
         <div id="profil-photo">
-            <ul>
-                <li><img id="avatar-img" src="https://via.placeholder.com/150" alt="placeholder"></li>
-            </ul>
+            <img id="avatar-img" src="{{ user.avatar }}" alt="placeholder">
         </div>
+        {% else %}
+            <div id="profil-photo">
+                <img id="avatar-img" src="https://via.placeholder.com/150" alt="placeholder">
+            </div>
+        {% endif %}
+
 
         <div id="profil-infos">
             <ul>
-                <li><span>Nom d'utilisateur </span><span class="infos-space">{{ user.username }}</span></li>
-                <li><span>Adresse mail </span><span class="infos-space">{{ user.email }}</span></li>
-                <li><span>Rôle(s) </span><span class="infos-space">{{ user.rolesToString }}</span></li>
+                <li><span>Nom d'utilisateur </span></li>
+                <li><span>Adresse mail </span></li>
+                <li><span>Rôle(s) </span></li>
             </ul>
+            <ul>
+                <li><span class="infos-space">{{ user.username }}</span></li>
+                <li><span class="infos-space">{{ user.email }}</span></li>
+                <li><span class="infos-space">{{ user.rolesToString }}</span></li>
+            </ul>
+        </div>
+    </div>
+    <div id="settings-container">
+        <div id="settings-title">
+            <div>
+                <ul id="menu-slider">
+                    <li id="a" ><a>Modifier les infos</a><hr></li>
+                    <li id="b" ><a>Token API</a><hr></li>
+                    <li id="c" ><a>Changer le mot de passe</a><hr></li>
+                    <li id="d" ><a>Supprimer le compte</a><hr></li>
+                    <li id="e" ><a>Déconnection</a><hr></li>
+                </ul>
+            </div>
+        </div>
+        <div id="slider-container">
+
+            <div class="sliders" id="a_slider">
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label class="col-form-label" for="inputUsername"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">username</font></font></label>
+                        <input name="_username" type="text" class="form-control" value="{{ user.username }}" placeholder="username" id="inputUsername">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-form-label" for="inputEmail"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Adresse email</font></font></label>
+                        <input name="_email" type="text" class="form-control" value="{{ user.email }}" placeholder="email" id="inputEmail">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-form-label" for="inputEmail"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Avatar</font></font></label>
+                        <input name="_avatar" type="file" class="form-control" value="{{ user.email }}" placeholder="email" id="_avatar">
+                    </div>
+
+                    <button type="submit" class="btn btn-info">Confirmer</button>
+                </form>
+            </div>
+
+            <div class="sliders" id="b_slider">
+                TOKEN
+            </div>
+
+            <div class="sliders" id="c_slider">
+
+                <form id="passwordForm" action=" " method="post">
+                    <div class="form-group">
+                        <label for="">Mot de passe</label>
+                        <input id="_password" name="_password" type="password" name="_password" value="" onchange="check_password()" required>
+                        <small id="passwordLegend" class="form-text text-muted">Le mot de passe doit faire 8 caractères</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Confirmation du mot de passe</label>
+                        <input id="_password_confirm" name="_password_confirm" type="password" name="_confirm_password" value="" onchange="check_password()" required>
+                        <small id="passwordConfirmLegend" class="form-text text-muted">Le mot de passe doit être identiques</small>
+                    </div>
+                    <button id="password_submit" type="submit" class="btn btn-info">Confirmer</button>
+                </form>
+
+            </div>
+
+            <div class="sliders" id="d_slider">
+                HELLO D SLIDER
+            </div>
+
+            <div class="sliders" id="e_slider">
+                HELLO E SLIDER
+            </div>
+
         </div>
     </div>
 

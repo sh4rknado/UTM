@@ -43,13 +43,13 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
 
-                        {% if null == user.avatar %}
-                            <i class="fa fa-fw {{ user is not null ? 'fa-user-circle' : 'fa-user-times' }} user-avatar"></i>
+                        {% if null == app.user.avatar %}
+                            <i class="fa fa-fw {{ app.user is not null ? 'fa-user-circle' : 'fa-user-times' }} user-avatar"></i>
                         {% else %}
-                            <img class="rounded-circle z-depth-0" alt="avatar image" src="{{ user.avatar }}" />
+                            <img class="rounded-circle z-depth-0" alt="avatar image" src="{{ app.user.avatar }}" />
                         {% endif %}
 
-                        <span class="user-name">{{ user.username }}</span>
+                        <span class="user-name">{{ app.user.username }}</span>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdownMenuLink-55">
