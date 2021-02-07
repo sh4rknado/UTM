@@ -4,16 +4,38 @@
 
 {% block body %}
     <script>
+        var activate_slide = "";
 
         /* Check password correct */
         function check_password() {
-            let password = $('#_password').val();
-            let password_confirm = $('#_password_confirm').val();
+            let pass_object = $('#_password');
+            let pass_confirm_object = $('#_password_confirm');
 
-            if(password !== "" && password_confirm !== "" && password === password_confirm)
-                $('#password_submit').removeAttr('disabled');
+            let password = pass_object.val();
+            let password_confirm = pass_confirm_object.val();
 
-            else $('#password_submit').prop("disabled", true);
+            /* Check If Password is 8 char */
+            if(password.length < 8) {
+                $('#msgContent').html('<strong>Attention !</strong><br>Le mot de passe ne fait pas 8 caractères !');
+                $("#msg").fadeIn("slow").fadeTo(8000, 8000).fadeOut("slow");
+                pass_object.removeClass('is-valid').addClass('is-invalid');
+                $('#password_submit').prop("disabled", true);
+            }
+            else if(password.length >= 8) {
+                pass_object.removeClass('is-invalid').addClass('is-valid');
+
+                if(password_confirm !== password) {
+                    $('#msgContent').html('<strong>Attention !</strong><br>Les mots de passe ne correspondent pas !');
+                    $("#msg").fadeIn("slow").fadeTo(8000, 8000).fadeOut("slow");
+                    pass_confirm_object.removeClass('is-valid').addClass('is-invalid');
+                    $('#password_submit').prop("disabled", true);
+                }
+                else {
+                    pass_confirm_object.removeClass('is-invalid').addClass('is-valid');
+                    pass_object.removeClass('is-invalid').addClass('is-valid');
+                    $('#password_submit').removeAttr('disabled');
+                }
+            }
         }
 
         /* Show the Slider */
@@ -21,24 +43,94 @@
             let sliders = document.getElementsByClassName('sliders');
             let new_id = id + "_slider";
 
-            for(let i=0; i < sliders.length; i++) {
-                if(sliders[i].id === new_id) {
-                    $('.sliders').fadeOut(500).delay(200);
-                    $(sliders[i]).delay(500).fadeIn('slow');
+            if(activate_slide !== new_id) {
+                for(let i=0; i < sliders.length; i++) {
+                    if(sliders[i].id === new_id) {
+                        $('#' + id).addClass('active');
+                        $('.sliders').fadeOut(500).delay(200);
+                        $(sliders[i]).delay(500).fadeIn('slow');
+                        activate_slide = new_id;
+                    }
+                    else {
+                        let extract_id = sliders[i].id.split('_');
+                        $('#' + extract_id[0]).removeClass('active');
+                    }
                 }
             }
+        }
+
+        /* Function clipboard */
+        function clipboard() {
+            /* Get the text field */
+            var copyText = document.getElementById("_token");
+
+            /* Select the text field */
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+        }
+
+        /* Regenerate Token */
+        function generateToken() {
+            $.ajax({
+                method: "POST",
+                url: "{{ path('app_profile') }}",
+                dataType: 'json',
+                async: true,
+                data: {cmd: 'newToken'},
+                success: function(data, status) {
+                    $('#_token').val(data['newToken']);
+                },
+                error : function(xhr, textStatus, errorThrown) {
+                    console.log(xhr);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert('Ajax request failed.');
+                }
+            });
+        }
+
+        /* Revoke Token */
+        function revokeToken() {
+            $.ajax({
+                method: "POST",
+                url: "{{ path('app_profile') }}",
+                dataType: 'json',
+                async: true,
+                data: {cmd: 'revokeToken'},
+                success: function(data, status) {
+                    $('#_token').val(data['revokeToken']);
+                },
+                error : function(xhr, textStatus, errorThrown) {
+                    console.log(xhr);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert('Ajax request failed.');
+                }
+            });
+        }
+
+        /* Change Token State */
+        function tokenChange(tokenBtn) {
+            if(tokenBtn.checked) generateToken();
+            else revokeToken();
         }
 
         /* Document Ready */
         $(document).ready(function() {
             $('.sliders').fadeOut(0);
+            $('#msg').fadeOut(0);
             $('#password_submit').prop("disabled", true);
+            $('#tokenSwitch').val({{ user.isUseApi }});
+
+            // Show Default Slider
+            showSlider('a');
 
             // li and a Click event
             document.getElementById("menu-slider").addEventListener("click",function(e) {
-
                 if(e.target.nodeName === "A" || e.target.nodeName === "HR" || e.target.nodeName === "FONT") {
-
                     // Try to search parent Node to get ID of LI
                     parent = e.target.parentNode;
                     while (parent.id === "") parent = parent.parentNode;
@@ -47,11 +139,15 @@
                 else if(e.target.nodeName === "LI") showSlider(e.target.id);
             });
 
-            // Show Default Slider
-            showSlider('a');
         });
 
     </script>
+
+    <div id="msg" class="msg_error alert alert-dismissible alert-danger" >
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <span id="msgContent"> </span>
+    </div>
+
 
 <div class="example-wrapper">
 
@@ -85,20 +181,22 @@
         <div id="settings-title">
             <div>
                 <ul id="menu-slider">
-                    <li id="a" ><a>Modifier les infos</a><hr></li>
+                    <li id="a" ><a>Modifier l'utilisateur</a><hr></li>
                     <li id="b" ><a>Token API</a><hr></li>
                     <li id="c" ><a>Changer le mot de passe</a><hr></li>
-                    <li id="d" ><a>Supprimer le compte</a><hr></li>
-                    <li id="e" ><a>Déconnection</a><hr></li>
                 </ul>
             </div>
         </div>
         <div id="slider-container">
-
-            <div class="sliders" id="a_slider">
+            <div class="sliders user-infos" id="a_slider">
                 <form action="" method="post" enctype="multipart/form-data">
+                    <div>
+                        <h4><i class="fa fa-user"></i>Informations</h4>
+                        <hr>
+                    </div>
+
                     <div class="form-group">
-                        <label class="col-form-label" for="inputUsername"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">username</font></font></label>
+                        <label class="col-form-label" for="inputUsername"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Username</font></font></label>
                         <input name="_username" type="text" class="form-control" value="{{ user.username }}" placeholder="username" id="inputUsername">
                     </div>
 
@@ -108,43 +206,57 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-form-label" for="inputEmail"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Avatar</font></font></label>
-                        <input name="_avatar" type="file" class="form-control" value="{{ user.email }}" placeholder="email" id="_avatar">
+                        <label for="_avatar">Avatar</label>
+                        <input name="_avatar" type="file" class="form-control-file"  id="_avatar" aria-describedby="fileHelp">
+                        <small id="fileHelp" class="form-text text-muted">La photo sera redimensionnée</small>
                     </div>
-
-                    <button type="submit" class="btn btn-info">Confirmer</button>
+                    <button id="user_submit" type="submit" class="btn btn-info">Confirmer</button>
                 </form>
             </div>
-
             <div class="sliders" id="b_slider">
-                TOKEN
+                <div id="token-container">
+                    <div id="token-enabler">
+                        <h4><i class="fa fa-key"></i>Paramètre Token</h4>
+                        <div class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="tokenSwitch" checked="" onclick="tokenChange(this)">
+                                <label class="custom-control-label" for="tokenSwitch"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Enable Token</font></font></label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                        <div id="token-settings">
+                            <label for="">Token </label>
+                            <input type="text" name="_token" id="_token" value="{{ user.apitoken }}" readonly="">
+                            <a id="clipboardBtn" onclick="clipboard()"><i class="fa fa-clipboard" aria-hidden="true"></i>Copier</a>
+                        </div>
+                    <div id="btnTokenRegen">
+                        <button id="token_submit" onclick="generateToken()" class="btn btn-info">Regénérer Token</button>
+                    </div>
+                    </div>
             </div>
 
             <div class="sliders" id="c_slider">
-
                 <form id="passwordForm" action=" " method="post">
+                    <div id="passwordTile">
+                        <h4><i class="fa fa-lock"> </i>Mot de passe</h4>
+                        <hr>
+                    </div>
+
                     <div class="form-group">
-                        <label for="">Mot de passe</label>
-                        <input id="_password" name="_password" type="password" name="_password" value="" onchange="check_password()" required>
+                        <label for="_password">Mot de passe</label>
+                        <input id="_password" name="_password" type="password" class="form-control" value="" onchange="check_password()" required>
                         <small id="passwordLegend" class="form-text text-muted">Le mot de passe doit faire 8 caractères</small>
                     </div>
                     <div class="form-group">
-                        <label for="">Confirmation du mot de passe</label>
-                        <input id="_password_confirm" name="_password_confirm" type="password" name="_confirm_password" value="" onchange="check_password()" required>
+                        <label for="_password_confirm">Confirmation</label>
+                        <input id="_password_confirm" name="_password_confirm" type="password" class="form-control" value="" onchange="check_password()" required>
                         <small id="passwordConfirmLegend" class="form-text text-muted">Le mot de passe doit être identiques</small>
                     </div>
                     <button id="password_submit" type="submit" class="btn btn-info">Confirmer</button>
                 </form>
-
             </div>
 
-            <div class="sliders" id="d_slider">
-                HELLO D SLIDER
-            </div>
-
-            <div class="sliders" id="e_slider">
-                HELLO E SLIDER
-            </div>
 
         </div>
     </div>

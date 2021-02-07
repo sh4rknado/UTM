@@ -45,10 +45,12 @@ body {
 
 .msg_error {
     width: 260px;
-    float: right;
+    right: 0;
+    position: fixed;
     margin-top: 10px;
     margin-right: 20px;
 }
+
 /* Mobile Size */
 @media (min-width: 600px) and (max-width: 1000px) {
 

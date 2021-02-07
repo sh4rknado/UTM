@@ -25,8 +25,8 @@ class UserFixtures extends Fixture
             ->setUsername('admin')
             ->setPassword($this->encoder->encodePassword($user, 'admin'));
         $user->addRole('ROLE_ADMIN');
+        $user->generateToken();
         $manager->persist($user);
-
 
         /**
          * Create User
@@ -36,6 +36,7 @@ class UserFixtures extends Fixture
             ->setUsername('user')
             ->setPassword($this->encoder->encodePassword($user, 'user'));
         $user->addRole('ROLE_USER');
+        $user->generateToken();
         $manager->persist($user);
 
         /**

@@ -17,8 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     message="L'email que vous avez indiqué est déjà utilisé !"
  * )
  */
-class User implements UserInterface
-{
+class User implements UserInterface {
+
+
+    /* //////////////////////// < ATTRIBUTES > ////////////////////////////////// */
 
     /**
      * @ORM\Id
@@ -53,7 +55,6 @@ class User implements UserInterface
     public $confirm_password;
 
     /**
-     *
      * @var string username
      * @ORM\Column(type="string", length=255)
      *
@@ -71,6 +72,46 @@ class User implements UserInterface
      * @orm\Column(type="string", nullable=true)
      */
     private $avatar;
+
+
+    /**
+     * @var boolean use api key
+     * @orm\Column(type="boolean", nullable=false)
+     */
+    private $use_api;
+
+    /* //////////////////////// < DEFAULT BUILDER > ////////////////////////////////// */
+
+
+    /**
+     * Default Buidler init Roles : ROLE_USER
+     */
+    public function __contruct__() {
+        $this->setRoles(['ROLE_USER']);
+        $this->setUseApi(false);
+    }
+
+
+    /* //////////////////////// < GETTER / SETTER > ////////////////////////////////// */
+
+
+    /**
+     * @return bool
+     */
+    public function isUseApi(): bool
+    {
+        return $this->use_api;
+    }
+
+    /**
+     * @param bool $use_api
+     * @return User
+     */
+    public function setUseApi(bool $use_api): User
+    {
+        $this->use_api = $use_api;
+        return $this;
+    }
 
     /**
      * @return string
@@ -186,7 +227,8 @@ class User implements UserInterface
      */
     public function getApiToken(): string
     {
-        return $this->apiToken;
+        if($this->apiToken == null) return "";
+        else return $this->apiToken;
     }
 
     /**
@@ -207,6 +249,10 @@ class User implements UserInterface
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
+
+    /* //////////////////////// < HELPERS FUNCTION > ////////////////////////////////// */
+
+
     /**
      * @see UserInterface
      */
@@ -214,14 +260,6 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    /**
-     * Default Buidler init Roles : ROLE_USER
-     */
-    public function __contruct__() {
-        $this->setRoles(['ROLE_USER']);
-        $this->setAvatar('images/$this->getId().jpg');
     }
 
     /**
@@ -267,6 +305,22 @@ class User implements UserInterface
         }
         return $convert_roles;
 
+    }
+
+    /**
+     * Generate Token
+     */
+    public function generateToken() {
+        $this->setUseApi(true);
+        $this->setApiToken(bin2hex(openssl_random_pseudo_bytes(16)));
+    }
+
+    /**
+     * Set Token to null
+     */
+    public function revokeToken() {
+        $this->setUseApi(false);
+        $this->apiToken = null;
     }
 
 }

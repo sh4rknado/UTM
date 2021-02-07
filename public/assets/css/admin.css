@@ -1,0 +1,37 @@
+
+#top_head {
+    background-color: lightseagreen;
+}
+
+.navbar-nav img {
+    width: 50px;
+}
+
+/* //////////////////////////// <SideBar Section > //////////////////////////// */
+
+#side_bar {
+    width: 200px;
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    border: 1px solid #999;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #1b4f72;
+}
+
+#side_bar ul {
+    padding-left: 0;
+}
+
+#side_bar ul li {
+    list-style: none;
+    padding-left: 5px;
+    padding-top: 5px;
+    border: 1px solid #999;
+    cursor: pointer;
+    padding-bottom: 10px;
+}
+
+
+#side_bar ul li a {
+    list-style: none;
+}

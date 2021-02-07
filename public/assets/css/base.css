@@ -9,6 +9,14 @@ ul li {
     width: 50px;
 }
 
+.msg_error {
+    width: 260px;
+    right: 0;
+    position: fixed;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
 
 /*  /////////////////////////////// < Navivation Bar > /////////////////////////////// */
 
@@ -41,6 +49,7 @@ ul li {
     display: flex;
 }
 
+
 #profil-container, #settings-container h3 {
     padding: 20px;
 }
@@ -48,6 +57,19 @@ ul li {
 #profil-container ul li {
     padding: 10px;
 }
+
+#settings-container ul li a {
+    transition: all .2s ease-in-out;
+}
+
+#settings-container ul li:hover > hr {
+    background-color: dodgerblue;
+}
+
+#settings-container ul li.active > hr {
+    background-color: dodgerblue;
+}
+
 
 /* /// < Profil Avatar > /// */
 
@@ -88,10 +110,82 @@ ul li {
 }
 
 .sliders {
+    padding: 20px;
     display: block;
     width: 40vw;
     margin-left: 4vw;
     height: 100%;
     box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
     background: #fff;
+}
+
+/* Infos container */
+
+.user-infos {
+    text-align: right;
+}
+
+.user-infos h4, #token-enabler h4, #passwordForm h4  {
+    text-align: center;
+}
+
+.user-infos h4 i, #passwordForm h4 i, #token-enabler h4 i {
+    margin-right: 5px;
+}
+
+.user-infos div, #passwordForm div {
+    text-align: left;
+}
+
+#clipboardBtn {
+    font-size: 20px;
+}
+
+.fa-clipboard {
+    font-size: 25px;
+}
+
+
+/* Settings Token Container */
+
+#token-settings {
+    padding: 0;
+    width: fit-content;
+    margin-left: 2vw;
+    margin-top: 4vh;
+}
+
+#token-enabler, #passwordForm {
+    text-align: right;
+}
+
+#token-enabler h4 {
+    padding: 0;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+#_token {
+    margin-left: 10px;
+    width: 300px;
+}
+
+#clipboardBtn:hover, #clipboardBtn {
+    cursor: pointer;
+}
+
+#clipboardBtn {
+    margin-left: 20px;
+}
+
+#clipboardBtn i {
+    margin-right: 5px;
+}
+
+#btnTokenRegen {
+    margin-top: 20px;
+}
+
+#btnTokenRegen button {
+    width: 100%;
 }
